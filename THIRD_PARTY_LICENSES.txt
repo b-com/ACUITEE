@@ -1,0 +1,46 @@
+Library		Version	License					Link
+----------------------------------------------------------------------------------------------------------
+Flask		2.0.1	BSD License (BSD-3-Clause)		https://flask.palletsprojects.com/en/2.0.x/
+
+Requests 	2.26.0	Apache Software License (Apache 2.0)	https://docs.python-requests.org/en/latest/#
+
+Gevent		21.1.2	MIT License (MIT)			http://www.gevent.org/api/gevent.pywsgi.html#gevent.pywsgi.WSGIServer
+
+Pronto		2.4.3	MIT License (MIT)			https://github.com/althonos/pronto
+
+NumPy		1.21.0	BSD License (BSD)			https://numpy.org/
+
+NLTK		3.6.2	Apache Software License (Apache 2.0)	https://www.nltk.org/
+
+Pandas		1.2.4	BSD License (BSD-3-Clause)		https://pandas.pydata.org/
+
+Ahocorasick-rs	0.9.1	Apache 2.0				https://pypi.org/project/ahocorasick-rs/
+
+jQuery		3.5.1	MIT License				https://jquery.org/license/ 
+
+jQuery UI	1.11.4	MIT License				https://jqueryui.com/ 
+
+DataTables 	1.10.19	MIT License				https://datatables.net/license/ 
+
+jQuery BlockUI	2.70	MIT and GPL licenses			https://malsup.com/jquery/block/
+
+Bootstrap 	4.6.0	MIT License				https://getbootstrap.com/ 
+
+Font Awesome	5.7.0	Code — MIT License 			https://fontawesome.com/license/free
+Font Awesome	5.7.0	Fonts — SIL OFL 1.1 			https://fontawesome.com/license/free
+Font Awesome	5.7.0	Icons — CC BY 4.0 License 		https://fontawesome.com/license/free
+
+---------------------------------------------------------------------------------------------------
+License of using the Human Phenotype Ontology (HPO), version date 08/02/2021:
+https://hpo.jax.org/app/license
+
+All of the following license restrictions apply to all files provided by the HPO project:
+
+1- The HPO vocabularies, annotation files, tools and documentation are freely available.
+2- The HPO is copyrighted to protect the integrity of the vocabularies, which means that changes to the HPO vocabularies need to be done by HPO developers. However, anyone can download the HPO and use the ontologies or other HPO files under three conditions:
+    * That the Human Phenotype Ontology Consortium is acknowledged and cited properly.
+    * That any HPO Consortium file(s) displayed publicly include the date(s) and/or version number(s) of the relevant HPO file(s).
+    * That neither the content of the HPO file(s) nor the logical relationships embedded within the HPO file(s) be altered in any way. (Content additions and modifications have to be suggested using our issue tracker.)
+3- We suggest that you follow standard scientific citation practice if you use the HPO in publications.
+4- Users of the HPO should add the following statement to their online presence. This service/product uses the Human Phenotype Ontology (version information). Find out more at http://www.human-phenotype-ontology.org We request that the HPO logo be included as well.
+---------------------------------------------------------------------------------------------------

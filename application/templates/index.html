@@ -1,0 +1,153 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<button id="insertTermMouseEnter" style="display:none;" onclick="insertTermEnterkey()" selectedText="" start=0 length=0>Enter</button>
+<section class="flex-shrink-0">
+    <br>
+    <div class="container-fluid">
+        
+        <div class="row border rounded-top">
+            <div class="col-md-8 border-right">
+                <div class="mainTitle font-weight-bold" ><i class="fas fa-file-medical"></i>&nbsp Medical Note</div>
+                <br>
+                <div class="form-floating" id="NoteTextID">                               
+                    <textarea class="form-control note-readonly" rows="19" id="noteTextarea">                                        
+                    </textarea>
+                </div>
+                <div class="text-left hidden" id="id_Parsed_Div">
+                    <p id="id_ParsedNote" style="white-space: pre-wrap"></p>
+                </div>
+                
+                      
+                <h6 class="pb-2 font-weight-bold"></h6>      
+                <div class="button-group" >
+                    <button type="submit" class="btn btn-outline-primary pull-right" id="buttonParse">Parse </button>
+                    <button type="submit" class="btn btn-outline-primary pull-right" id="buttonNewNote">Insert new medical report</button>
+                </div>
+                <h6 class="pb-2 font-weight-bold"></h6>
+            </div>
+            <div class="col-md-4">                    
+                    <div class="mainTitle font-weight-bold"><i class="fas fa-highlighter"></i> Annotated phrase</div> 
+                    <br>
+                    <div class="text-left hidden" id="AnnotatedPhrase">
+                        <p style="color:rgb(138, 20, 4)" id="SelectedEntityInfo" lastElementID="None"><i>Please select an entity to show/edit the annotation details</i></p>
+                    </div>
+                    <br>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="CheckNegated" onclick="update_Neg_MCS_Asc()">
+                        <label class="form-check-label" for="CheckNegated">
+                          This phrase is negated
+                        </label>
+                    </div>    
+                    <br>                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-check-label"> This phrase concerns: </label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">                        
+                                <select class="form-control" id="selectPatientAascendant" style="width:auto;" onchange="update_Neg_MCS_Asc()">
+                                  <option value="-1">Select patient / ascendant </option>
+                                  <option value="0">Patient 1</option>
+                                  <option value="1">Ascendant: Parental Line</option>
+                                  <option value="2">Ascendant: Maternal Line</option>
+                                  <option value="3">Patient 2</option>
+                                  <option value="4">Other</option>
+                                </select>
+                            </div>
+                        </div>      
+                    </div>                    
+                    <br>
+                    <table class="table table-striped table-bordered small" id="termDetailesTable" style="table-layout: fixed; width: 100%;">
+                    <!--<table class="display" id="termDetailesTable">-->
+                        <thead>
+                          <!--<tr class="table-primary">-->
+                          <tr>
+                            <th style="width:  15%">ID</th>
+                            <th style="width:  50%">Term</th>
+                            <th style="width:  12%">rating</th>
+                            <th style="width:  10%"> Init. rating</th>
+                            <th style="width:  13%"> Actions</th> 
+                          </tr>
+                          <!--<tr class="m-0">
+                                <th class="w-10">ID</th>
+                                <th class="w-40">Term</th>
+                                <th class="w-20">rating</th>
+                                <th class="w-10">Init. rating</th>
+                                <th class="w-20">Actions</th>
+                            </tr>-->
+                        </thead>                        
+                    </table>
+                                    
+                    <div class="form-group">
+                        <label for="searchAddHPO">Search and add HPO terms:</label>
+                        <input type="text" class="form-control" id="searchAddHPO" placeholder="search ...">
+                        <table class="table table-striped table-bordered small" id="searchResultsTable">
+                            <thead>
+                                <tr>
+                                  <th scope="col" style="width:  15%">ID</th>
+                                  <th scope="col" style="width:  72%">Term</th>
+                                  <th scope="col" style="width:  13%"> Actions</th>                                                            
+                                </tr>
+                              </thead> 
+                        </table>
+                    </div>                  
+
+
+                    <br>    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="CheckMCS" onclick="update_Neg_MCS_Asc()">
+                        <label class="form-check-label" for="CheckMCS">
+                          Multiple clinical signs
+                        </label>
+                    </div> 
+                    <br>
+                    <div class="button-group" >
+                        <button type="submit" class="btn btn-outline-success pull-right" id="buttonValidate"> <i class="fa fa-check"></i> Validate </button>  
+                        <button type="submit" class="btn btn-outline-danger pull-right" id="buttonRemoveUnit"> <i class="fa fa-trash"></i> Remove this annotation unit </button>                                                     
+                    </div>     
+                    <br>
+            </div>
+        </div>
+        <br>
+        
+        <div class="row border rounded-top">        
+            <div class="col-md-12">    
+                <div class="mainTitle font-weight-bold">Parser selection and configurations</div>                 
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        String matching-based parser 
+                    </label>
+                </div>                    
+            </div>          
+        </div>
+        <br>
+        <div class="row border rounded-top">
+            <div class="col-md-12">                
+                <table class="table table-striped small" id="resultsTable">
+                    <thead class="table-header">
+                        <tr>
+                        <th scope="col">Phrase</th>                        
+                        <th scope="col">ID</th>
+                        <th scope="col">Term</th>
+                        <th scope="col">Is_negated</th>
+                        <th scope="col">Patient</th>
+                        <th scope="col">Score</th>
+                        </tr>
+                    </thead>          
+                </table>  
+                <div class="button-group" >
+                    <button type="submit" class="btn btn-outline-primary pull-right" id="buttonExport"> Export results in json file </button>                        
+                </div>
+                <br> 
+            </div>                
+        </div>
+    </div>  
+    <div class="container-fluid">   
+        <img src="{{ url_for('static', filename='images/HPO_logo.png') }}"  width="40" align="left">
+        <p>&nbsp;&nbsp;  ACUITEE uses the Human Phenotype Ontology (08/02/2021). Find out more at <a href="http://www.human-phenotype-ontology.org" target="_blank">http://www.human-phenotype-ontology.org</a>  </p>
+    </div>
+ 
+</section>
+{% endblock %}

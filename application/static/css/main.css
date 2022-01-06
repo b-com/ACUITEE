@@ -1,0 +1,189 @@
+/* 
+main.css – Software ACUITEE
+Copyright 2021 b<>com. All rights reserved.
+This software is licensed under the Apache License, Version 2.0.
+You may not use this file except in compliance with the license. 
+You may obtain a copy of the license at: 
+http://www.apache.org/licenses/LICENSE-2.0 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, 
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and 
+limitations under the License.
+*/
+
+* {
+    box-sizing: border-box;
+}
+
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    position: relative;
+    margin:0px;
+}
+
+header {
+    text-align: left;
+}
+
+li {
+    display: inline;
+    padding: 5px;
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+a:hover { color : red;}
+
+hr {
+    width: 100%;
+    height:4px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: darkblue;
+    border: 0 none;
+}
+
+#searchResultsTable thead {
+    display: none;
+}
+
+.top-container {
+    background: rgb(212, 230, 248);
+    padding:5px;
+    border-bottom:2px solid #ffffff;
+}
+
+
+.bottom-container {
+    background: rgb(212, 230, 248);
+    padding:5px;
+    border-top:2px solid #ffffff;
+    /* position:absolute; */
+    bottom:0;
+}
+
+.container-term {
+    width:80%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.table-header {
+    background: rgb(212, 230, 248);
+}
+
+footer {
+    text-align: center;
+    height: 50px;
+    color: rgb(11, 6, 78);
+    padding: 5px;
+    margin-top: 10px;
+    bottom: 0px;
+}
+
+.btn-submit {
+    background-color: cornflowerblue;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+}
+.btn-submit:hover {
+    opacity: 1;
+}
+
+.note-readonly{
+    background-color:#FFF !important;
+}
+
+.highlight-validated {
+    color: rgb(8, 8, 65);
+    font-style: italic;
+    font-weight: 500;
+	cursor: pointer;
+	padding: 0.25em 0.35em;
+	margin: 0px 0.25em;
+	line-height: 1;
+	display: inline-block;
+	border-radius: 0.25em;
+	border: 1px solid;	
+    background: rgb(169, 239, 255);
+    border-color: rgb(180, 177, 174);	
+}
+
+.highlight-proposed {
+    color: rgb(8, 8, 65);
+    font-style: italic;
+    font-weight: 500;
+	cursor: pointer;
+	padding: 0.25em 0.35em;
+	margin: 0px 0.25em;
+	line-height: 1;
+	display: inline-block;
+	border-radius: 0.25em;
+	border: 1px solid;	
+    background: rgb(252, 250, 156);
+    border-color: rgb(180, 177, 174);	
+}
+
+.button-add-term {
+    color: rgb(8, 8, 65);
+    font-style: italic;
+    font-weight: 500;
+	cursor: pointer;
+	padding: 0.25em 0.35em;
+	margin: 0px 0.25em;
+	line-height: 1;
+	display: inline-block;
+	border-radius: 0.25em;
+	border: 1px solid;	
+    background: rgb(255, 255, 255);
+    border-color: rgb(180, 177, 174);	
+}
+.button-remove-term {
+    color: rgb(8, 8, 65);
+    font-style: italic;
+    font-weight: 500;
+	cursor: pointer;
+	padding: 0.25em 0.35em;
+	margin: 0px 0.25em;
+	line-height: 1;
+	display: inline-block;
+	border-radius: 0.25em;
+	border: 1px solid;	
+    background: rgb(255, 255, 255);
+    border-color: rgb(180, 177, 174);	
+}
+
+.highlight-selected {
+	border: 3px dashed;
+    border-color: rgb(226, 21, 21);	
+}
+
+.mainTitle {
+    background:rgb(212, 230, 248);
+    padding:5px;
+   }
+
+.dialog-no-close .ui-dialog-titlebar {
+    display: none;
+}
+
+.star-rating{    
+	cursor: pointer;		
+}

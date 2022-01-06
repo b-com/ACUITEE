@@ -1,0 +1,15 @@
+<header>
+    <div class="container-fluid top-container">   
+        <!-- <img src="{{ url_for('static', filename='images/logo.svg') }}"  width="100" align="right">-->
+        <h4 class="pb-2 font-weight-bold">ACUITEE</h4>
+    </div>
+    {% if False %}
+    <nav>
+        <ul class="nav nav-pills">            
+            <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link {% if index %}active{% endif %}">Home</a></li>            
+        </ul>
+    </nav>
+    <hr style="clear:both">
+    {% endif %}
+</header>
+
