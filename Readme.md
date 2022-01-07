@@ -9,6 +9,6 @@
     - Production: from the terminal, type ``python main.py``. This will run the application with gevent server.
 
 # Human Phenotype Ontology (HPO)
-This web application, ACUITEE, uses the Human Phenotype Ontology (08/02/2021). Find out more at [http://www.human-phenotype-ontology.org](http://www.human-phenotype-ontology.org) 
+This web application, ACUITEE, uses the Human Phenotype Ontology (08/02/2021). Find out more at [http://www.human-phenotype-ontology.org](http://www.human-phenotype-ontology.org)
 
-<img src="https://hpo.jax.org/app/assets/hpo-logo-white.png" style="background-color:blue ;" alt="HPO" width="200"/>
+<img src="https://github.com/b-com/ACUITEE/blob/main/HPO_logo.png?raw=true" style="background-color:blue ;" alt="HPO" width="50"/>
