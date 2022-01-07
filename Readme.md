@@ -1,3 +1,6 @@
+# ACUITEE (Annotation and Curation User Interface for Terms Extraction Engines)
+ACUITEE represents a web application with three main functionalities: visualization, editing and manual curation of the annotation results proposed by automatic parsers.
+
 # Instructions
 
 1.	Clone the source codes and put them on some directory on your local machine.
