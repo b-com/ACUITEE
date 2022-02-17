@@ -173,7 +173,7 @@ function prepareOutputJson(resJson_raw){
 			"start": resJson[i].start,
 			"length": resJson[i].length,
 			"negated" : resJson[i].negated,
-			"ascendant" :	resJson[i].ascendant,
+			"concerned_person" :	resJson[i].ascendant,
 			"mult_CS" :resJson[i].mult_CS,
 			"hpoAnnotation" : resJson[i].hpoAnnotation
 		};
