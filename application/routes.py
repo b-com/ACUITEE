@@ -17,14 +17,31 @@ from flask import render_template, request, json, Response, jsonify, session
 import requests
 from application.Global_objects import HPO_TERMS, HPO_OBO
 import re
+import datetime
 from application.ParserSM import Normalize_Annotation_Format,Annotation_DF2List,Extract_HPO_Fr_StringMaching
 
+# Setup the Flask-JWT-Extended extension
+from flask_jwt_extended import JWTManager, create_access_token, decode_token
+jwt = JWTManager(app)
 
 @app.route("/")
 @app.route("/index")
 @app.route("/home")
 def index():    
-    return render_template("index.html")
+    return render_template("index.html", note_text=app.config["EXAMPLE_NOTE"])
+
+@app.route("/put",methods=['POST'])
+def generate_jwt():
+    '''Takes a json request, returns a JWT token from the json content'''
+    expires = datetime.timedelta(days=3)
+    access_token = create_access_token(identity=request.json, expires_delta=expires)
+    return access_token
+
+@app.route("/<token>")
+def verify_token(token):
+    '''Takes the token in the url and returns a index page with the note loaded (identity validates the token)'''
+    identity = decode_token(token)
+    return render_template("index.html", note_text=identity['sub']['note'])
 
 @app.route("/parse/bcomSM",methods=['POST','GET'])
 def ParseAC():
@@ -43,11 +60,11 @@ def ParseAC():
         for j in range(len( annotations[i]['hpoAnnotation'])):
             annotations[i]['hpoAnnotation'][j]['ratingInit']=annotations[i]['hpoAnnotation'][j]['rating']
 
-        # Postprocessing
+    # Postprocessing
     annotations=Annotations_Postprocessing(annotations)
     # save terms in the user session
     session['annoStruct'] = annotations
-
+    
     return json.dumps(annotations)
 
 def ParseAC_FromAPI():
