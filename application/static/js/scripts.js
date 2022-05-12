@@ -66,7 +66,7 @@ function Reset_Annotated_Phrase_Panel(){
 }
 
 function formControl() {
-	InitializeNoteTextarea();	
+	//InitializeNoteTextarea();	
 	$("#buttonParse").on("click", function() {
 		Parse();
 		$("#NoteTextID").hide();
