@@ -45,7 +45,7 @@ function Parse() {
 				'Content-Type' : 'application/json'
 			},
 			type : 'POST',
-			url : "parse/bcomSM",
+			url : "note/parse/bcomSM",
 			data : JSON.stringify(formData),
 			dataType : "json",
 			success : function(terms) {			
@@ -196,7 +196,7 @@ function search_HPO_Terms(query){
 				'Content-Type' : 'application/json'
 			},
 			type : 'POST',
-			url : "/Search_Terms",
+			url : "note/Search_Terms",
 			data : JSON.stringify(formData),
 			dataType : "json",
 			success : function(matched_terms) {
@@ -312,7 +312,7 @@ function add_HPO_Term(term){
 			'Content-Type' : 'application/json'
 		},
 		type : 'POST',
-		url : "/Add_HPO_Term",
+		url : " note/Add_HPO_Term",
 		data : JSON.stringify(formData),
 		dataType : "json",
 		success : function(terms) {
@@ -350,7 +350,7 @@ function RemoveAnnotationUnit(){
 					'Content-Type' : 'application/json'
 				},
 				type : 'POST',
-				url : "/RemoveAnnotationUnit",
+				url : "note/RemoveAnnotationUnit",
 				data : JSON.stringify(formData),
 				dataType : "json",
 				success : function(terms) {					
@@ -388,7 +388,7 @@ function validate(){
 					'Content-Type' : 'application/json'
 				},
 				type : 'POST',
-				url : "/validateAnno",
+				url : "note/validateAnno",
 				data : JSON.stringify(formData),
 				dataType : "json",
 				success : function(terms) {			
@@ -442,7 +442,7 @@ function update_Neg_MCS_Asc(){
 					'Content-Type' : 'application/json'
 				},
 				type : 'POST',
-				url : "/update_Neg_MCS_Asc",
+				url : "note/update_Neg_MCS_Asc",
 				data : JSON.stringify(formData),
 				dataType : "json",
 				success : function(terms) {			
@@ -471,7 +471,7 @@ function AddTerm_Mouse_Enter(start,length){
 				'Content-Type' : 'application/json'
 			},
 			type : 'POST',
-			url : "/AddTerm_Mouse_Enter",
+			url : "note/AddTerm_Mouse_Enter",
 			data : JSON.stringify(formData),
 			dataType : "json",
 			success : function(terms) {
@@ -772,7 +772,7 @@ function updateRating(start,length,hpoId,starNum){
 			'Content-Type' : 'application/json'
 		},
 		type : 'POST',
-		url : "/updateTermRating",
+		url : "note/updateTermRating",
 		data : JSON.stringify(formData),
 		dataType : "json",
 		success : function(terms) {
@@ -809,7 +809,7 @@ function remove_HPO_Term(term){
 			'Content-Type' : 'application/json'
 		},
 		type : 'POST',
-		url : "/Remove_HPO_Term",
+		url : "note/Remove_HPO_Term",
 		data : JSON.stringify(formData),
 		dataType : "json",
 		success : function(terms) {
@@ -1006,7 +1006,7 @@ function getHpoTermDetails(HPO_ID){
 		},
 		type : 'POST',
 		async: !1,
-		url : "/getHpoTermDetails",
+		url : "note/getHpoTermDetails",
 		data : JSON.stringify(formData),
 		dataType : "json",
 		success : function(data) {
@@ -1028,7 +1028,7 @@ function get_annotation_results(){
 			'Content-Type' : 'application/json'
 		},
 		type : 'GET',
-		url : "/get_annotation_results",
+		url : "note/get_annotation_results",
 		dataType : "json",
 		async: false,
 		success : function(data) {			
