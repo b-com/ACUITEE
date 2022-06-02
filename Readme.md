@@ -9,7 +9,7 @@ ACUITEE represents a web application with three main functionalities: visualizat
 Majd SALEH, PhD, Research & Development Engineer, Artificial Intelligence Laboratory, IRT b<>com, France
 #### Contributors: 
 * Majd SALEH, Stéphane PAQUELET, Cyndie MARTIN, IRT b<>com, France
-* Marie DE TAYRAC, Paul ROLLIER, Wilfried CARRE, Chrystele DUBOURG and Sylvie ODENT, CHU de Rennes, France
+* Marie DE TAYRAC, Paul ROLLIER, Youenn MEREL, Wilfried CARRE, Chrystele DUBOURG and Sylvie ODENT, CHU de Rennes, France
 * Guillaume COLLET and Olivier DAMERON, Univ. Rennes 1, France
 * Thomas LABBE and Jean-Michel SANNER, Orange, France
 
@@ -34,7 +34,7 @@ where ``-d`` is used to make the container (i.e. the running image) working in a
 4. Use your favorite browser, go to the following URL to access the web application ACUITEE:
 ``http://localhost:5000/``
 5. To stop the docker container, use the command ``docker stop acuitee``
-6. To start the docker container again, use: ``docker start acuitee``
+6. To start the docker container, use: ``docker start acuitee``
 
 # Human Phenotype Ontology (HPO)
 
