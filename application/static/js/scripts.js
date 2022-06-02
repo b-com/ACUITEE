@@ -32,10 +32,17 @@ function InitializeNoteTextarea() {
 }
 
 function Parse() {	
+	var Parser_StrMatch_Element = document.getElementById("Parser_StrMatch");
+	var Parser_ENLIGHTOR_Element  = document.getElementById("Parser_ENLIGHTOR");
+	var bParser_StrMatch=Parser_StrMatch_Element.checked
+	var bParser_ENLIGHTOR=Parser_ENLIGHTOR_Element.checked
+
 	var note = $("#noteTextarea").val();
 	$("#id_ParsedNote").text(note);
 	var formData = {
-		'note' : note
+		'note' : note,
+		'bStrMatch': bParser_StrMatch,
+		'bENLIGHTOR': bParser_ENLIGHTOR
 	};
 	$.blockUI({ message: '<h6> The note is being parsed. Please wait! </h6>' });
 
@@ -45,7 +52,7 @@ function Parse() {
 				'Content-Type' : 'application/json'
 			},
 			type : 'POST',
-			url : "/note/parse/bcomSM",
+			url : "note/parse/bcom",
 			data : JSON.stringify(formData),
 			dataType : "json",
 			success : function(terms) {			
@@ -121,39 +128,39 @@ function formControl() {
 function prepareOutputJson(resJson_raw){
 	resJson=resJson_raw
 	//alert(typeof resJson_raw)
-	//const resJson = (({ start, length, negated ,ascendant,mult_CS, hpoAnnotation}) => ({ start, length, negated ,ascendant,mult_CS, hpoAnnotation}))(resJson_raw);
+	//const resJson = (({ start, length, negated ,concerned_person,mult_CS, hpoAnnotation}) => ({ start, length, negated ,concerned_person,mult_CS, hpoAnnotation}))(resJson_raw);
 
-	//var resJson = resJson_raw.pick( ['start', 'length','negated' ,'ascendant','mult_CS', 'hpoAnnotation']); 
+	//var resJson = resJson_raw.pick( ['start', 'length','negated' ,'concerned_person','mult_CS', 'hpoAnnotation']); 
 	//alert(JSON.stringify(resJson))
 
 	for (key in resJson) {
 		if (resJson.hasOwnProperty(key)) {
 			delete resJson[key].validated;			
-			//convert the ascendant from index to name for readability
-			var ascendant= parseInt(resJson[key].ascendant);
-			switch (ascendant) {
+			//convert the concerned_person from index to name for readability
+			var concerned_person= parseInt(resJson[key].concerned_person);
+			switch (concerned_person) {
 				case -1: { // Patient 1
-					resJson[key].ascendant='Not defined';
+					resJson[key].concerned_person='Not defined';
 					break;
 				}
 				case 0: { // Patient 1
-					resJson[key].ascendant='Patient';
+					resJson[key].concerned_person='Patient';
 					break;
 				}
 				case 1: { // Parental line
-					resJson[key].ascendant='Parental line';
+					resJson[key].concerned_person='Parental line';
 					break;
 				}
 				case 2: { // Maternal line
-					resJson[key].ascendant='Maternal line';
+					resJson[key].concerned_person='Maternal line';
 					break;
 				}
 				case 3: { // Patient 2
-					resJson[key].ascendant='Patient 2';
+					resJson[key].concerned_person='Patient 2';
 					break;
 				}
 				case 4: { // Other
-					resJson[key].ascendant='Other';
+					resJson[key].concerned_person='Other';
 					break;
 				}
 			}			
@@ -166,16 +173,17 @@ function prepareOutputJson(resJson_raw){
 			resJson.splice(i, 1);
 		}
 	}
-	// Reorder the object keys : ['start', 'length','negated' ,'ascendant','mult_CS', 'hpoAnnotation']
+	// Reorder the object keys : ['start', 'length','negated' ,'concerned_person','mult_CS', 'hpoAnnotation']
 	var resJson_ordered = [];
 	for (let i = 0; i< resJson.length; i++) {
 		dictTemp={
 			"start": resJson[i].start,
 			"length": resJson[i].length,
+			"sentence" : resJson[i].sentence,
 			"negated" : resJson[i].negated,
-			"concerned_person" :	resJson[i].ascendant,
+			"concerned_person" :	resJson[i].concerned_person,
 			"mult_CS" :resJson[i].mult_CS,
-			"hpoAnnotation" : resJson[i].hpoAnnotation
+			"hpoAnnotation" : resJson[i].hpoAnnotation			
 		};
 		resJson_ordered.push(dictTemp);
 	}
@@ -231,7 +239,7 @@ function Fill_Search_Results_Table(terms){
 			' id= ' + spanID + '>';
 		var strEnd='<i class="fas fa-plus"></i></span>';
 		var ActionStr=	strStart+strEnd;
-		strStart='<span onclick="info_HPO_Term(this)"'+
+		strStart='<span onclick="(this)"'+
 			'class= "'+spanClass+'"'+					
 			' id= ' + hpoId + '>';
 		strEnd='<i class="fas fa-info"></i></span>';
@@ -272,8 +280,12 @@ function Fill_Search_Results_Table(terms){
 	
 }
 
-function info_HPO_Term(term){	
-	show_HPO_term_details(term.id);
+function info_HPO_Term(infoUnit){
+	ctrlID=infoUnit.id;
+	var id_segments = ctrlID.split("_"); // HpoID_ParserID
+	var hpoId = id_segments[0];
+	var parserID = id_segments[1];
+	show_HPO_term_details(hpoId,parserID);
 }
 
 function add_HPO_Term(term){
@@ -417,8 +429,8 @@ function update_Neg_MCS_Asc(){
 		var CheckMCS = document.getElementById("CheckMCS");
 		var mult_CS=CheckMCS.checked		
 		//--------------------------------------------------
-		// ascendant
-		var ascendant=document.getElementById("selectPatientAascendant").value;
+		// concerned_person
+		var concerned_person=document.getElementById("selectPatientAascendant").value;
 		
 		//--------------------------------------------------
 		// start and length
@@ -431,7 +443,7 @@ function update_Neg_MCS_Asc(){
 		var formData = {
 			'negated' : negated,
 			'mult_CS' : mult_CS,
-			'ascendant' :ascendant,
+			'concerned_person' :concerned_person,
 			'start' : start
 		};
 		$.blockUI({ message: '<h6> The session is being updated. Please wait! </h6>' });
@@ -557,7 +569,7 @@ function createParsedNoteHtml(terms) {
 			' length="'+ terms[i]['length'] +'"'+
 			' phrase="'+ AnnotatedPhrase +'"'+
 			' negated="' + terms[i]['negated'] +'"'+
-			' ascendant="'+terms[i]['ascendant']+'"'+
+			' concerned_person="'+terms[i]['concerned_person']+'"'+
 			' mult_CS="' + terms[i]['mult_CS'] +'"'+
 			' hpoAnnotation=\'' + JSON.stringify(terms[i]['hpoAnnotation']).replace("'","&apos") +'\''+
 			' id= ' + curElementID + '>';
@@ -617,9 +629,9 @@ function showEntityDetails(entity,ResetSearchTable=true) {
 	}
 	$("#CheckMCS").prop('checked', mult_CS);
 
-	// get and show the patient / ascendant	
-	var ascendant = $("#" + entity.id).attr('ascendant');
-	document.getElementById("selectPatientAascendant").value = ascendant;
+	// get and show the concerned_person	
+	var concerned_person = $("#" + entity.id).attr('Concerned_Person');
+	document.getElementById("selectPatientAascendant").value = concerned_person;
 
 	// get start and length (to be used later for modifying the annotation range)
 	var start_str = $("#" + entity.id).attr('start');
@@ -648,6 +660,7 @@ function show_HPO_Term_Details_Table(entity){
 	var json_terms = [];
 	for (let i = 0; i< hpoAnnotation.length; i++) {
 		hpoId=hpoAnnotation[i]['hpoId'];
+		parserID=hpoAnnotation[i]['parser'];
 		//hpoId_href = '<a href="javascript:show_HPO_term_details(\''+hpoId+'\');">'+hpoId+'</a>';
 		hpoName=hpoAnnotation[i]['hpoName'];
 		ratingVal=parseInt(hpoAnnotation[i]['rating']);
@@ -701,8 +714,8 @@ function show_HPO_Term_Details_Table(entity){
 			'><i class="fa fa-trash"></i></span>';
 		
 		strStart='<span onclick="info_HPO_Term(this)"'+
-		'class= "'+spanClass+'"'+					
-		' id= ' + hpoId + '>';
+		'class= "'+spanClass+'"'+	
+		' id= ' + hpoId+ '_'+parserID +'>';
 		strEnd='<i class="fas fa-info"></i></span>';
 		ActionStr=	ActionStr+strStart+strEnd;
 
@@ -837,7 +850,7 @@ function updateResultsTable(terms){
 		var endIndex=startIndex+terms[i]['length'];
 		var AnnotatedPhrase=note.substring(startIndex, endIndex);
 		var negated=terms[i]['negated'];
-		var ascendant=terms[i]['ascendant'];
+		var concerned_person=terms[i]['concerned_person'];
 		var hpoAnnotation=terms[i]['hpoAnnotation'];
 
 		for (let j = 0; j< hpoAnnotation.length; j++) {
@@ -850,7 +863,7 @@ function updateResultsTable(terms){
 				"ID": hpoId,
 				"Term": hpoName,
 				"Is_negated" : negated,
-				"Patient" : ascendant,
+				"Patient" : concerned_person,
 				"Score": rating			
 			};
 			json_terms.push(dictTemp);
@@ -927,7 +940,18 @@ function resetTermEnterkey_attr(){
 	document.getElementById("insertTermMouseEnter").length = 0;
 }
 
-function show_HPO_term_details(HPO_ID) {
+function ParserID2Name(id){
+	if(id=="Manual")
+		return "Manual annotation";
+	if(id=="StrMatch")
+		return "String matching-based parser";
+	if(id=="ENLIGHTOR")
+		return "b<>com ENLIGHTOR";
+	return "Unknown parser!"
+}
+
+function show_HPO_term_details(HPO_ID,ParserID="None") {
+
 	var termDetails=getHpoTermDetails(HPO_ID);
 
 	var res_hpoID = termDetails["ID"];
@@ -965,31 +989,40 @@ function show_HPO_term_details(HPO_ID) {
 						'}'+		
 						'</style>'+				
 					'</head>'+
-					'<body>	'+
-						'<table id="termOboInfoTable">'+
-							'<tr>'+
-								'<td><b>ID</b></td>'+
-								'<td>'+res_hpoID+'</td>'+
-							'</tr>'+
-							'<tr>'+
-								'<td><b>Term</b></td>'+
-								'<td>'+res_HpoName+'</td>'+
-							'</tr>'+
-							'<tr>'+
-								'<td><b>Definition</b></td>'+
-								'<td>'+res_Def+'</td>'+
-							'</tr>'+
-							'<tr>'+
-								'<td><b>Synonyms</b></td>'+
-								'<td>'+res_Synonyms+'</td>'+
-							'</tr>'+
-							'<tr>'+
-								'<td><b>Hierarchy</b></td>'+
-								'<td>'+res_Hierarchy+'</td>'+
-							'</tr>'+
-						'</table>'
-					'</body>'+
-					'</html>';
+					'<body>	'
+	if(ParserID!="None"){
+		content=content+'<h3>Parsing sources:</h3>'+
+						'<ul>'
+		var parserIds = ParserID.split(";"); // HpoID_ParserID
+		for(i in parserIds){			
+			content=content+'<li>'+ParserID2Name(parserIds[i])+'</li>'
+		}
+		content=content+'</ul>'
+	}
+	content=content+'<h3>HPO term description:</h3>'
+	content=content+'<table id="termOboInfoTable">'+
+						'<tr>'+
+							'<td><b>ID</b></td>'+
+							'<td>'+res_hpoID+'</td>'+
+						'</tr>'+
+						'<tr>'+
+							'<td><b>Term</b></td>'+
+							'<td>'+res_HpoName+'</td>'+
+						'</tr>'+
+						'<tr>'+
+							'<td><b>Definition</b></td>'+
+							'<td>'+res_Def+'</td>'+
+						'</tr>'+
+						'<tr>'+
+							'<td><b>Synonyms</b></td>'+
+							'<td>'+res_Synonyms+'</td>'+
+						'</tr>'+
+						'<tr>'+
+							'<td><b>Hierarchy</b></td>'+
+							'<td>'+res_Hierarchy+'</td>'+
+						'</tr>'+
+					'</table>';	
+	content=content+'</body>'+'</html>';
 
 	myWindow.document.body.innerHTML = '';
 	myWindow.document.write(content);
