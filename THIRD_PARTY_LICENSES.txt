@@ -43,4 +43,4 @@ All of the following license restrictions apply to all files provided by the HPO
     * That neither the content of the HPO file(s) nor the logical relationships embedded within the HPO file(s) be altered in any way. (Content additions and modifications have to be suggested using our issue tracker.)
 3- We suggest that you follow standard scientific citation practice if you use the HPO in publications.
 4- Users of the HPO should add the following statement to their online presence. This service/product uses the Human Phenotype Ontology (version information). Find out more at http://www.human-phenotype-ontology.org We request that the HPO logo be included as well.
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
