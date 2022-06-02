@@ -45,7 +45,7 @@ function Parse() {
 				'Content-Type' : 'application/json'
 			},
 			type : 'POST',
-			url : "note/parse/bcomSM",
+			url : "/note/parse/bcomSM",
 			data : JSON.stringify(formData),
 			dataType : "json",
 			success : function(terms) {			
@@ -312,7 +312,7 @@ function add_HPO_Term(term){
 			'Content-Type' : 'application/json'
 		},
 		type : 'POST',
-		url : " note/Add_HPO_Term",
+		url : "note/Add_HPO_Term",
 		data : JSON.stringify(formData),
 		dataType : "json",
 		success : function(terms) {
