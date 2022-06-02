@@ -17,3 +17,7 @@ from gevent.pywsgi import WSGIServer
 if __name__ == '__main__':
     print('Serving on 5000...')
     WSGIServer(('0.0.0.0', 5000), app).serve_forever()
+
+    #print('Serving on https://:5000')
+    #server = WSGIServer(('127.0.0.1', 5000), app, keyfile='server.key', certfile='server.crt')
+    #server.serve_forever() # to start the server asynchronously, call server.start()
