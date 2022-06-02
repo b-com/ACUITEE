@@ -19,4 +19,4 @@ app = Flask(__name__)
 
 app.config.from_object(Config)
 
-from application import routes
+from application import routes 

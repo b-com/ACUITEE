@@ -2,3 +2,5 @@ __pycache__/
 venv/
 .vscode/
 HPO_preprocessed.npy
+HPO_preprocessed__.npy
+hpoterms08022021_en_fr___.txt
