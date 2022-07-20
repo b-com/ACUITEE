@@ -35,13 +35,22 @@ def generate_jwt():
     '''Takes a json request, returns a JWT token from the json content'''
     expires = datetime.timedelta(days=3)
     access_token = create_access_token(identity=request.json, expires_delta=expires)
+    session['sourceid'] = request.json['sourceId']
     return access_token
 
 @app.route("/note/<token>")
 def verify_token(token):
     '''Takes the token in the url and returns a index page with the note loaded (identity validates the token)'''
     identity = decode_token(token)
+    session['sourceid'] = identity['sub']['sourceId']
     return render_template("index.html", note_text=identity['sub']['note'])
+
+@app.route("/note/savejson",methods=['POST'])
+def SaveJson():
+    path = app.config['JSON_REPO'] + '/' +  session['sourceid'] + '_data.json'
+    with open(path, 'w') as f:
+        json.dump(request.json, f)
+    return {}
 
 @app.route("/parse/bcomSM",methods=['POST','GET'])
 @app.route("/note/parse/bcomSM",methods=['POST','GET'])
