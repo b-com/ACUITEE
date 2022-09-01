@@ -25,3 +25,5 @@ A l'examen ce jour, à l'âge de 4 ans, PRENOM pèse 12 kg, inférieur à - 2 DS
 Au total, je rencontre ce jour PRENOM âgé de 4 ans qui présente un retard global de développement associé à des troubles comportementaux et une microcéphalie. Devant ce tableau, je n'ai pas de diagnostic étiologique précis et propose la réalisation d'un exome en trio. Les deux parents ont donc été prélevés ce jour pour réaliser cette analyse. 
 Je ne manquerai pas de tenir informé la famille dès réception des résultats.
 Confraternellement. """
+    CERT_FILE = ''
+    KEY_FILE  = ''

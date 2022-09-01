@@ -15,5 +15,10 @@ from gevent.pywsgi import WSGIServer
 
 # for production deployment, use gevent server
 if __name__ == '__main__':
+    cert_file = app.config['CERT_FILE']
+    key_file = app.config['KEY_FILE']
     print('Serving on 5000...')
-    WSGIServer(('0.0.0.0', 5000), app).serve_forever()
+    if cert_file != '' and key_file != '':
+        WSGIServer(('0.0.0.0', 5000), app, certfile=cert_file, keyfile=key_file).serve_forever()
+    else:
+        WSGIServer(('0.0.0.0', 5000), app).serve_forever()
