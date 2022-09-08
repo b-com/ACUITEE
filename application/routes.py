@@ -47,7 +47,7 @@ def verify_token(token):
 
 @app.route("/note/savejson",methods=['POST'])
 def SaveJson():
-    path = app.config['JSON_REPO'] + '/' +  session['sourceid'] + '_data.json'
+    path = app.config['JSON_REPO'] + '/' +  str(session['sourceid']) + '_data.json'
     with open(path, 'w') as f:
         json.dump(request.json, f)
     return {}
