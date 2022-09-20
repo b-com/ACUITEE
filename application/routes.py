@@ -217,6 +217,7 @@ def AddTerm_Mouse_Enter():
 
     if not rangeDecreasing: # add new entry with empty list of HPO terms
         newEntry={'start': start, 'length': length, 'negated': False, 'concerned_person': -1, 'mult_CS': False, 'validated':False,
+        newEntry={'start': start, 'length': length, 'negated': False, 'concerned_person': 0, 'mult_CS': False, 'validated':False,
             'hpoAnnotation': []}        
         annotations.append(newEntry)
 
