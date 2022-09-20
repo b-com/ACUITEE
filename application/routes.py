@@ -41,6 +41,7 @@ def generate_jwt():
 def verify_token(token):
     '''Takes the token in the url and returns a index page with the note loaded (identity validates the token)'''
     identity = decode_token(token)
+    session['annotatorId'] = identity['sub']['sourceId']
     return render_template("index.html", note_text=identity['sub']['note'])
 
 def Concerned_Person_str2num(AscStr):
@@ -216,7 +217,6 @@ def AddTerm_Mouse_Enter():
             break        
 
     if not rangeDecreasing: # add new entry with empty list of HPO terms
-        newEntry={'start': start, 'length': length, 'negated': False, 'concerned_person': -1, 'mult_CS': False, 'validated':False,
         newEntry={'start': start, 'length': length, 'negated': False, 'concerned_person': 0, 'mult_CS': False, 'validated':False,
             'hpoAnnotation': []}        
         annotations.append(newEntry)
@@ -471,3 +471,10 @@ def RemoveAnnotationUnit():
         session['annoStruct']=annotations
         return json.dumps(annotations)
     return {}
+
+@app.route("/note/get_annotator_ID",methods=['GET'])
+def get_annotator_ID():
+    if not session.get('annotatorId'):
+        session['annotatorId']="NA"
+    annotatorId= session['annotatorId']
+    return json.dumps(annotatorId)

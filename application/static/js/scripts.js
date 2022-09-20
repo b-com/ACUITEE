@@ -187,7 +187,12 @@ function prepareOutputJson(resJson_raw){
 		};
 		resJson_ordered.push(dictTemp);
 	}
-	return resJson_ordered;
+	// Add the annotator name and the annotation date 
+	annotator_ID=get_annotator_ID()
+	const annotation_Date = new Date();	
+	const options = { /*weekday: 'long',*/ year: 'numeric', month: 'long', day: 'numeric' };
+	annotation_Date_str=annotation_Date.toLocaleDateString(undefined, options);
+	return {"date":annotation_Date_str,"annotator_ID":annotator_ID,"annotations":resJson_ordered};
 }
 
 function Export_Results_Json(){
@@ -1072,3 +1077,24 @@ function get_annotation_results(){
 	}).responseJSON;
 	return annotation_results;
 }
+
+function get_annotator_ID(){
+
+	annotator_ID = $.ajax({
+		headers : {
+			'Accept' : 'application/json',
+			'Content-Type' : 'application/json'
+		},
+		type : 'GET',
+		url : "note/get_annotator_ID",
+		dataType : "json",
+		async: false,
+		success : function(data) {			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log("get_annotation_results() problem!");
+		}
+	}).responseJSON;
+	return annotator_ID;
+}
+
