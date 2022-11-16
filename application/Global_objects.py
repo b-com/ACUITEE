@@ -20,7 +20,7 @@ import ahocorasick_rs
 def Load_HPO_Local_Preprocessed():
     # Load the local version of the HPO dataset (preprocessed version with only terms that represent phynotypic abnormality)
     # Assumption: we use the frozen version of the HPO dataset 08-02-2021
-    hpo_file_name= "hpoterms08022021_en_fr.txt"
+    hpo_file_name= "hpoterms08022021_en_fr.txt" 
     preprocessed_file_name='application/resources/HPO_preprocessed.npy'
     
     if path.exists(preprocessed_file_name):

@@ -11,7 +11,7 @@
                 <div class="mainTitle font-weight-bold" ><i class="fas fa-file-medical"></i>&nbsp Medical Note</div>
                 <br>
                 <div class="form-floating" id="NoteTextID">                               
-                    <textarea class="form-control note-readonly" rows="19" id="noteTextarea">{{note_text}}                                        
+                    <textarea class="form-control note-readonly" rows="19" id="noteTextarea">{{note_text}}                                
                     </textarea>
                 </div>
                 <div class="text-left hidden" id="id_Parsed_Div">
@@ -113,13 +113,19 @@
         
         <div class="row border rounded-top">        
             <div class="col-md-12">    
-                <div class="mainTitle font-weight-bold">Parser selection and configurations</div>                 
+                <div class="mainTitle font-weight-bold">Parser selection and configurations</div>                
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
-                    <label class="form-check-label" for="flexRadioDefault1">
-                        String matching-based parser 
+                    <input class="form-check-input" type="checkbox" value="" id="Parser_StrMatch" checked>
+                    <label class="form-check-label" for="Parser_StrMatch">
+                        String matching-based parser
                     </label>
-                </div>                    
+                </div> 
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="Parser_ENLIGHTOR">
+                    <label class="form-check-label" for="Parser_ENLIGHTOR">
+                        b&lt&gtcom ENLIGHTOR
+                    </label>
+                </div>    
             </div>          
         </div>
         <br>

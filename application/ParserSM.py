@@ -11,7 +11,7 @@
 # limitations under the License.
 
 import numpy as np
-import pandas as pd
+import pandas as pd 
 import re
 import csv
 from nltk import ngrams,RegexpTokenizer
@@ -196,7 +196,7 @@ def Annotation_PostProcessing(annotations):
         
     return annotations_final_compact,annotations_regrouped
 
-def Ascendant_str2num(AscStr):
+def Concerned_Person_str2num(AscStr):
     predef_pat={'Pt1':0,'Pt2':1,'Mat':2,'Par':3,'Oth':4}
     return predef_pat[AscStr]
 
@@ -218,7 +218,7 @@ def Annotation_DF2List(annotations_df):
                  "start":row['start'],
                  "length":row['length'],
                  "negated":row['negated'],
-                 "ascendant":Ascendant_str2num(row['patient']),
+                 "concerned_person":Concerned_Person_str2num(row['concerned_person']),
                  "mult_CS":row['mult_CS'],
                  "hpoAnnotation":curHpoTermsDictList
                 }
@@ -227,7 +227,7 @@ def Annotation_DF2List(annotations_df):
 
 def Normalize_Annotation_Format(df):
     # All annotation dataframes should follow this format:
-    # Header: ["start","length","phrase","HPO_ID"	,"HPO_Terms","score","negated","patient"]
+    # Header: ["start","length","phrase","HPO_ID"	,"HPO_Terms","score","negated","concerned_person"]
     # where:
     # 1- start is an integer. It represents where the annotated phrase starts (number of characters from the beginning of the text)
     # 2- length is an integer. It represents the length of the annotated phrase (number of characters).
@@ -236,7 +236,7 @@ def Normalize_Annotation_Format(df):
     # 5- HPO_Terms is a list of strings. It represents the HPO Terms that correspond to the HPO IDs.
     # 6- score is a list of integers between 0 and 1. It represnts the scores given for each selected HPO term.
     # 7- negated is a boolean variable. It represents the negation status.
-    # 8- patient is a string: Pt1 for patient number 1, Pt2 for patient number 2, Par for Parental line, Mat for 
+    # 8- concerned_person is a string: Pt1 for patient number 1, Pt2 for patient number 2, Par for Parental line, Mat for 
     # maternal line and Oth for other cases.
     # ------------------------------------------
     
@@ -246,17 +246,17 @@ def Normalize_Annotation_Format(df):
         negated_default=[False]*len(df)
         df['negated']=negated_default
     df['negated']=df['negated'].astype(bool)   
-    # check if the df contains 'patient' field. If not 
-    # we add the default (patient='Pt1')
-    if 'patient' not in df.columns:
-        patient_default=['Pt1']*len(df)
-        df['patient']=patient_default        
+    # check if the df contains 'concerned_person' field. If not 
+    # we add the default (concerned_person='Pt1')
+    if 'concerned_person' not in df.columns:
+        concerned_person_default=['Pt1']*len(df)
+        df['concerned_person']=concerned_person_default        
     else:# for compatibility with old versions, convert True to Pt1 and False to Oth
         predef_pat=['Pt1','Pt2','Mat','Par','Oth']
-        if df['patient'][0] not in predef_pat:
-            df['patient']=df['patient'].replace(True,'Pt1')
-            df['patient']=df['patient'].replace(False,'Oth')
-            df['patient']=df['patient'].replace('cas index','Pa1')
+        if df['concerned_person'][0] not in predef_pat:
+            df['concerned_person']=df['concerned_person'].replace(True,'Pt1')
+            df['concerned_person']=df['concerned_person'].replace(False,'Oth')
+            df['concerned_person']=df['concerned_person'].replace('cas index','Pt1')
             
        
     # check if the df contains 'score' field. If not,
@@ -273,7 +273,7 @@ def Normalize_Annotation_Format(df):
         df['mult_CS']=mcs_default    
  
     # put the columns of the annotations_auto in the same order as annotations_manual (for automating the comparison)
-    df=df[["start","length","phrase","HPO_ID","HPO_Terms","score","negated","patient","mult_CS"]]
+    df=df[["start","length","phrase","HPO_ID","HPO_Terms","score","negated","concerned_person","mult_CS"]]
     return df
 
 # define the tokenization funtion 

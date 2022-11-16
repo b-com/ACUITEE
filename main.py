@@ -15,10 +15,9 @@ from gevent.pywsgi import WSGIServer
 
 # for production deployment, use gevent server
 if __name__ == '__main__':
-    cert_file = app.config['CERT_FILE']
-    key_file = app.config['KEY_FILE']
     print('Serving on 5000...')
-    if cert_file != '' and key_file != '':
-        WSGIServer(('0.0.0.0', 5000), app, certfile=cert_file, keyfile=key_file).serve_forever()
-    else:
-        WSGIServer(('0.0.0.0', 5000), app).serve_forever()
+    WSGIServer(('0.0.0.0', 5000), app).serve_forever()
+
+    #print('Serving on https://:5000')
+    #server = WSGIServer(('127.0.0.1', 5000), app, keyfile='server.key', certfile='server.crt')
+    #server.serve_forever() # to start the server asynchronously, call server.start()
