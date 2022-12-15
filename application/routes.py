@@ -13,7 +13,7 @@
 
 
 from application import app
-from flask import render_template, request, json, Response, jsonify, session
+from flask import render_template, request, json, session
 import requests
 from application.Global_objects import HPO_TERMS, HPO_OBO
 import re
@@ -27,13 +27,17 @@ jwt = JWTManager(app)
 @app.route("/")
 @app.route("/index")
 @app.route("/home")
-def index():    
+def index():
+    '''Render a default page for testing'''
     return render_template("index.html", note_text=app.config["EXAMPLE_NOTE"])
 
 @app.route("/note/put",methods=['POST'])
 def generate_jwt():
     '''Takes a json request, returns a JWT token from the json content'''
+    session['annotatorId'] = request.json['sourceId']
+    session['noteContent'] = request.json['note']
     expires = datetime.timedelta(days=3)
+    del request.json['note']
     access_token = create_access_token(identity=request.json, expires_delta=expires)
     return access_token
 
@@ -42,7 +46,7 @@ def verify_token(token):
     '''Takes the token in the url and returns a index page with the note loaded (identity validates the token)'''
     identity = decode_token(token)
     session['annotatorId'] = identity['sub']['sourceId']
-    return render_template("index.html", note_text=identity['sub']['note'])
+    return render_template("index.html", note_text=session['noteContent'])
 
 def Concerned_Person_str2num(AscStr):
     predef_pat={'Pt1':0,'Pt2':1,'Mat':2,'Par':3,'Oth':4}
@@ -53,8 +57,18 @@ def ENLIGHTOR_results_normalization(annotations_list):
         ann["concerned_person"]=Concerned_Person_str2num(ann["concerned_person"])
     return annotations_list
 
-@app.route("/note/parse/bcom",methods=['POST','GET'])
+@app.route("/note/savejson",methods=['POST'])
+def save_json():
+    '''Save annotation in json file on disk'''
+    path = app.config['JSON_REPO'] + '/' +  str(session['sourceid']) + '_data.json'
+    with open(path, 'w') as f:
+        json.dump(request.json, f)
+    return {}
+
+@app.route("/parse/bcomSM",methods=['POST','GET'])
+@app.route("/note/parse/bcomSM",methods=['POST','GET'])
 def Parse():
+    '''Parse the given note'''
     note=request.json['note']
     bParser_StrMatch=request.json['bStrMatch']
     bParser_ENLIGHTOR=request.json['bENLIGHTOR']
@@ -147,7 +161,7 @@ def ParseAC_FromAPI():
 
     return json.dumps(annotations)
 
-
+@app.route("/update_Neg_MCS_Asc",methods=['POST','GET'])
 @app.route("/note/update_Neg_MCS_Asc",methods=['POST','GET'])
 def update_Neg_MCS_Asc():
     if session.get('annoStruct'):
@@ -171,6 +185,7 @@ def update_Neg_MCS_Asc():
         return json.dumps(annotations)
     return {}
 
+@app.route("/validateAnno",methods=['POST','GET'])
 @app.route("/note/validateAnno",methods=['POST','GET'])
 def validateAnno():
     if session.get('annoStruct'):
@@ -189,6 +204,7 @@ def validateAnno():
         return json.dumps(annotations)
     return {}
 
+@app.route("/AddTerm_Mouse_Enter",methods=['POST','GET'])
 @app.route("/note/AddTerm_Mouse_Enter",methods=['POST','GET'])
 def AddTerm_Mouse_Enter():
     if not session.get('annoStruct'):
@@ -328,6 +344,7 @@ def Annotations_Postprocessing(annotations):
             annotations_Merged.append(curDict)
     return annotations_Merged
 
+@app.route("/Search_Terms",methods=['POST','GET'])
 @app.route("/note/Search_Terms",methods=['POST','GET'])
 def Search_Terms():
     query=request.json['query']
@@ -347,7 +364,7 @@ def Search_HPO_Terms(query):
                 break    
     return matched_terms
 
-
+@app.route("/Remove_HPO_Term",methods=['POST','GET'])
 @app.route("/note/Remove_HPO_Term",methods=['POST','GET'])
 def Remove_HPO_Term():
     start=int(request.json['start'])
@@ -370,7 +387,7 @@ def Remove_HPO_Term():
     session['annoStruct']=annotations
     return json.dumps(annotations)
 
-
+@app.route("/Add_HPO_Term",methods=['POST','GET'])
 @app.route("/note/Add_HPO_Term",methods=['POST','GET'])
 def Add_HPO_Term():
     start=int(request.json['start'])
@@ -399,6 +416,7 @@ def Add_HPO_Term():
     session['annoStruct']=annotations
     return json.dumps(annotations)
 
+@app.route("/getHpoTermDetails",methods=['POST','GET'])
 @app.route("/note/getHpoTermDetails",methods=['POST','GET'])
 def getHpoTermDetails():
     hpoID=request.json['hpoId']
@@ -408,6 +426,7 @@ def getHpoTermDetails():
     termDetails={'termDetails': {"ID":hpoTerm.id,"name": hpoTerm.name, "Def":hpoTerm.definition,"Synonyms": synonyms, "Hierarchy":hierarchy}}
     return json.dumps(termDetails)
 
+@app.route("/get_annotation_results",methods=['GET'])
 @app.route("/note/get_annotation_results",methods=['GET'])
 def get_annotation_results():
     if not session.get('annoStruct'):
@@ -425,6 +444,7 @@ def get_annotation_results():
 
     return json.dumps(annotations)
 
+@app.route("/updateTermRating",methods=['POST','GET'])
 @app.route("/note/updateTermRating",methods=['POST','GET'])
 def updateTermRating():
     start=int(request.json['start'])
@@ -453,6 +473,7 @@ def updateTermRating():
     session['annoStruct']=annotations
     return json.dumps(annotations)
 
+@app.route("/RemoveAnnotationUnit",methods=['POST','GET'])
 @app.route("/note/RemoveAnnotationUnit",methods=['POST','GET'])
 def RemoveAnnotationUnit():
     if session.get('annoStruct'):

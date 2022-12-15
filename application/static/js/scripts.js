@@ -65,6 +65,28 @@ function Parse() {
 		});
 }
 
+function Savejson() {	
+	var resRaw = get_annotation_results();
+	var res = prepareOutputJson(resRaw);
+	$.blockUI({ message: '<h6> The note is being saved. Please wait! </h6>' });
+	$.ajax({
+			headers : {
+				'Accept' : 'application/json',
+				'Content-Type' : 'application/json'
+			},
+			type : 'POST',
+			url : "savejson",
+			data : JSON.stringify(res),
+			dataType : "json",
+			success : function(terms) {			
+				console.log("Json saved");
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log("Savejson() problem!");				
+			}
+		});
+}
+
 function Reset_Annotated_Phrase_Panel(){
 	show_HPO_Term_Details_Table(null);
 	Init_Search_Results_Table();
@@ -81,11 +103,15 @@ function formControl() {
 		
 	});	
 
+	$("#buttonSave").on("click", function() {
+		Savejson();
+	});
+
 	$("#buttonNewNote").on("click", function() {
 			$("#NoteTextID").show();
 			$("#id_Parsed_Div").hide();			
 			Reset_Annotated_Phrase_Panel();
-		});
+	});
 
 	$("#buttonValidate").on("click", function() {
 		validate();			
