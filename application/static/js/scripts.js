@@ -52,7 +52,7 @@ function Parse() {
 				'Content-Type' : 'application/json'
 			},
 			type : 'POST',
-			url : "note/parse/bcom",
+			url : "parse/bcom",
 			data : JSON.stringify(formData),
 			dataType : "json",
 			success : function(terms) {			
