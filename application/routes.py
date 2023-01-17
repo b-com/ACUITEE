@@ -65,7 +65,7 @@ def ENLIGHTOR_results_normalization(annotations_list):
 @app.route("/note/savejson",methods=['POST'])
 def save_json():
     '''Save annotation in json file on disk'''
-    path = app.config['JSON_REPO'] + '/' +  str(session['sourceid']) + '_data.json'
+    path = app.config['JSON_REPO'] + '/' +  str(session['annotatorId']) + '_data.json'
     with open(path, 'w') as f:
         json.dump(request.json, f)
     return {}
