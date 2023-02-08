@@ -46,8 +46,9 @@ def generate_jwt():
 def verify_token(token):
     '''Takes the token in the url and returns a index page with the note loaded (identity validates the token)'''
     identity = decode_token(token)
-    session['annotatorId'] = identity['sub']['sourceId']
-    path = app.config['JSON_REPO'] + '/' +  str(session['annotatorId']) + '_note.txt'
+    session['annotatorId'] = identity['sub']['annotator']
+    session['sourceId'] = identity['sub']['sourceId']
+    path = app.config['JSON_REPO'] + '/' +  str(session['sourceId']) + '_note.txt'
     with open(path, 'r') as f:
         session['note'] = f.read()
     os.remove(path)
@@ -65,7 +66,7 @@ def ENLIGHTOR_results_normalization(annotations_list):
 @app.route("/note/savejson",methods=['POST'])
 def save_json():
     '''Save annotation in json file on disk'''
-    path = app.config['JSON_REPO'] + '/' +  str(session['annotatorId']) + '_data.json'
+    path = app.config['JSON_REPO'] + '/' +  str(session['sourceId']) + '_data.json'
     with open(path, 'w') as f:
         json.dump(request.json, f)
     return {}
