@@ -216,8 +216,7 @@ function prepareOutputJson(resJson_raw){
 	// Add the annotator name and the annotation date 
 	annotator_ID=get_annotator_ID()
 	const annotation_Date = new Date();	
-	const options = { /*weekday: 'long',*/ year: 'numeric', month: 'long', day: 'numeric' };
-	annotation_Date_str=annotation_Date.toLocaleDateString(undefined, options);
+	annotation_Date_str=annotation_Date.toLocaleDateString("fr-FR");
 	return {"date":annotation_Date_str,"annotator_ID":annotator_ID,"annotations":resJson_ordered};
 }
 
@@ -1105,7 +1104,6 @@ function get_annotation_results(){
 }
 
 function get_annotator_ID(){
-
 	annotator_ID = $.ajax({
 		headers : {
 			'Accept' : 'application/json',
