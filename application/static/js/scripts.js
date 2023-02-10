@@ -215,9 +215,10 @@ function prepareOutputJson(resJson_raw){
 	}
 	// Add the annotator name and the annotation date 
 	annotator_ID=get_annotator_ID()
+	source_ID=get_source_ID()
 	const annotation_Date = new Date();	
 	annotation_Date_str=annotation_Date.toLocaleDateString("fr-FR");
-	return {"date":annotation_Date_str,"annotator_ID":annotator_ID,"annotations":resJson_ordered};
+	return {"date":annotation_Date_str,"annotator_ID":annotator_ID,"source_ID":source_ID,"annotations":resJson_ordered};
 }
 
 function Export_Results_Json(){
@@ -1116,9 +1117,27 @@ function get_annotator_ID(){
 		success : function(data) {			
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			console.log("get_annotation_results() problem!");
+			console.log("get_annotator_id() problem!");
 		}
 	}).responseJSON;
 	return annotator_ID;
 }
 
+function get_source_ID(){
+	source_ID = $.ajax({
+		headers : {
+			'Accept' : 'application/json',
+			'Content-Type' : 'application/json'
+		},
+		type : 'GET',
+		url : "get_source_ID",
+		dataType : "json",
+		async: false,
+		success : function(data) {			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log("get_source_id() problem!");
+		}
+	}).responseJSON;
+	return source_ID;
+}

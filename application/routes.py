@@ -505,3 +505,10 @@ def get_annotator_ID():
         session['annotatorId']="NA"
     annotatorId= session['annotatorId']
     return json.dumps(annotatorId)
+
+@app.route("/note/get_source_ID",methods=['GET'])
+def get_source_ID():
+    if not session.get('sourceId'):
+        session['sourceId']="NA"
+    sourceId= session['sourceId']
+    return json.dumps(sourceId)
