@@ -52,7 +52,7 @@ function Parse() {
 				'Content-Type' : 'application/json'
 			},
 			type : 'POST',
-			url : "note/parse/bcom",
+			url : "parse/bcom",
 			data : JSON.stringify(formData),
 			dataType : "json",
 			success : function(terms) {			
@@ -215,10 +215,10 @@ function prepareOutputJson(resJson_raw){
 	}
 	// Add the annotator name and the annotation date 
 	annotator_ID=get_annotator_ID()
+	source_ID=get_source_ID()
 	const annotation_Date = new Date();	
-	const options = { /*weekday: 'long',*/ year: 'numeric', month: 'long', day: 'numeric' };
-	annotation_Date_str=annotation_Date.toLocaleDateString(undefined, options);
-	return {"date":annotation_Date_str,"annotator_ID":annotator_ID,"annotations":resJson_ordered};
+	annotation_Date_str=annotation_Date.toLocaleDateString("fr-FR");
+	return {"date":annotation_Date_str,"annotator_ID":annotator_ID,"source_ID":source_ID,"annotations":resJson_ordered};
 }
 
 function Export_Results_Json(){
@@ -235,7 +235,7 @@ function search_HPO_Terms(query){
 				'Content-Type' : 'application/json'
 			},
 			type : 'POST',
-			url : "note/Search_Terms",
+			url : "Search_Terms",
 			data : JSON.stringify(formData),
 			dataType : "json",
 			success : function(matched_terms) {
@@ -355,7 +355,7 @@ function add_HPO_Term(term){
 			'Content-Type' : 'application/json'
 		},
 		type : 'POST',
-		url : "note/Add_HPO_Term",
+		url : "Add_HPO_Term",
 		data : JSON.stringify(formData),
 		dataType : "json",
 		success : function(terms) {
@@ -393,7 +393,7 @@ function RemoveAnnotationUnit(){
 					'Content-Type' : 'application/json'
 				},
 				type : 'POST',
-				url : "note/RemoveAnnotationUnit",
+				url : "RemoveAnnotationUnit",
 				data : JSON.stringify(formData),
 				dataType : "json",
 				success : function(terms) {					
@@ -431,7 +431,7 @@ function validate(){
 					'Content-Type' : 'application/json'
 				},
 				type : 'POST',
-				url : "note/validateAnno",
+				url : "validateAnno",
 				data : JSON.stringify(formData),
 				dataType : "json",
 				success : function(terms) {			
@@ -485,7 +485,7 @@ function update_Neg_MCS_Asc(){
 					'Content-Type' : 'application/json'
 				},
 				type : 'POST',
-				url : "note/update_Neg_MCS_Asc",
+				url : "update_Neg_MCS_Asc",
 				data : JSON.stringify(formData),
 				dataType : "json",
 				success : function(terms) {			
@@ -514,7 +514,7 @@ function AddTerm_Mouse_Enter(start,length){
 				'Content-Type' : 'application/json'
 			},
 			type : 'POST',
-			url : "note/AddTerm_Mouse_Enter",
+			url : "AddTerm_Mouse_Enter",
 			data : JSON.stringify(formData),
 			dataType : "json",
 			success : function(terms) {
@@ -816,7 +816,7 @@ function updateRating(start,length,hpoId,starNum){
 			'Content-Type' : 'application/json'
 		},
 		type : 'POST',
-		url : "note/updateTermRating",
+		url : "updateTermRating",
 		data : JSON.stringify(formData),
 		dataType : "json",
 		success : function(terms) {
@@ -853,7 +853,7 @@ function remove_HPO_Term(term){
 			'Content-Type' : 'application/json'
 		},
 		type : 'POST',
-		url : "note/Remove_HPO_Term",
+		url : "Remove_HPO_Term",
 		data : JSON.stringify(formData),
 		dataType : "json",
 		success : function(terms) {
@@ -1070,7 +1070,7 @@ function getHpoTermDetails(HPO_ID){
 		},
 		type : 'POST',
 		async: !1,
-		url : "note/getHpoTermDetails",
+		url : "getHpoTermDetails",
 		data : JSON.stringify(formData),
 		dataType : "json",
 		success : function(data) {
@@ -1092,7 +1092,7 @@ function get_annotation_results(){
 			'Content-Type' : 'application/json'
 		},
 		type : 'GET',
-		url : "note/get_annotation_results",
+		url : "get_annotation_results",
 		dataType : "json",
 		async: false,
 		success : function(data) {			
@@ -1105,22 +1105,39 @@ function get_annotation_results(){
 }
 
 function get_annotator_ID(){
-
 	annotator_ID = $.ajax({
 		headers : {
 			'Accept' : 'application/json',
 			'Content-Type' : 'application/json'
 		},
 		type : 'GET',
-		url : "note/get_annotator_ID",
+		url : "get_annotator_ID",
 		dataType : "json",
 		async: false,
 		success : function(data) {			
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			console.log("get_annotation_results() problem!");
+			console.log("get_annotator_id() problem!");
 		}
 	}).responseJSON;
 	return annotator_ID;
 }
 
+function get_source_ID(){
+	source_ID = $.ajax({
+		headers : {
+			'Accept' : 'application/json',
+			'Content-Type' : 'application/json'
+		},
+		type : 'GET',
+		url : "get_source_ID",
+		dataType : "json",
+		async: false,
+		success : function(data) {			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log("get_source_id() problem!");
+		}
+	}).responseJSON;
+	return source_ID;
+}

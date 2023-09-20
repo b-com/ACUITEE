@@ -11,7 +11,7 @@
 # limitations under the License.
 
 
-
+import os
 from application import app
 from flask import render_template, request, json, session
 import requests
@@ -34,8 +34,9 @@ def index():
 @app.route("/note/put",methods=['POST'])
 def generate_jwt():
     '''Takes a json request, returns a JWT token from the json content'''
-    session['annotatorId'] = request.json['sourceId']
-    session['noteContent'] = request.json['note']
+    path = app.config['JSON_REPO'] + '/' +  str(request.json['sourceId']) + '_note.txt'
+    with open(path, 'w') as f:
+        f.write(request.json['note'])
     expires = datetime.timedelta(days=3)
     del request.json['note']
     access_token = create_access_token(identity=request.json, expires_delta=expires)
@@ -45,8 +46,13 @@ def generate_jwt():
 def verify_token(token):
     '''Takes the token in the url and returns a index page with the note loaded (identity validates the token)'''
     identity = decode_token(token)
-    session['annotatorId'] = identity['sub']['sourceId']
-    return render_template("index.html", note_text=session['noteContent'])
+    session['annotatorId'] = identity['sub']['annotator']
+    session['sourceId'] = identity['sub']['sourceId']
+    path = app.config['JSON_REPO'] + '/' +  str(session['sourceId']) + '_note.txt'
+    with open(path, 'r') as f:
+        session['note'] = f.read()
+    os.remove(path)
+    return render_template("index.html", note_text=session['note'])
 
 def Concerned_Person_str2num(AscStr):
     predef_pat={'Pt1':0,'Pt2':1,'Mat':2,'Par':3,'Oth':4}
@@ -60,13 +66,13 @@ def ENLIGHTOR_results_normalization(annotations_list):
 @app.route("/note/savejson",methods=['POST'])
 def save_json():
     '''Save annotation in json file on disk'''
-    path = app.config['JSON_REPO'] + '/' +  str(session['sourceid']) + '_data.json'
+    path = app.config['JSON_REPO'] + '/' +  str(session['sourceId']) + '_data.json'
     with open(path, 'w') as f:
         json.dump(request.json, f)
     return {}
 
-@app.route("/parse/bcomSM",methods=['POST','GET'])
-@app.route("/note/parse/bcomSM",methods=['POST','GET'])
+@app.route("/parse/bcom",methods=['POST','GET'])
+@app.route("/note/parse/bcom",methods=['POST','GET'])
 def Parse():
     '''Parse the given note'''
     note=request.json['note']
@@ -499,3 +505,10 @@ def get_annotator_ID():
         session['annotatorId']="NA"
     annotatorId= session['annotatorId']
     return json.dumps(annotatorId)
+
+@app.route("/note/get_source_ID",methods=['GET'])
+def get_source_ID():
+    if not session.get('sourceId'):
+        session['sourceId']="NA"
+    sourceId= session['sourceId']
+    return json.dumps(sourceId)
