@@ -14,6 +14,7 @@ Majd SALEH, PhD, Research & Development Engineer, Artificial Intelligence Labora
 * Thomas LABBE and Jean-Michel SANNER, Orange, France
 
 ##
+<img src="https://github.com/b-com/ACUITEE/blob/main/UI.png?raw=true"/>
 
 # Instructions
 
